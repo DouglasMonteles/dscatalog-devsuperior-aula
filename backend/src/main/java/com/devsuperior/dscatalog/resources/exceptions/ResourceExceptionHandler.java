@@ -2,6 +2,7 @@ package com.devsuperior.dscatalog.resources.exceptions;
 
 import java.time.Instant;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -40,6 +41,21 @@ public class ResourceExceptionHandler {
 		error.setTimestamp(Instant.now());
 		error.setStatus(status.value());
 		error.setError("Database exception");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<StandardError> entityNotFoundException(
+			EntityNotFoundException e, HttpServletRequest request) {
+		var error = new StandardError();
+		var status = HttpStatus.NOT_FOUND;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(status.value());
+		error.setError("Entity not found");
 		error.setMessage(e.getMessage());
 		error.setPath(request.getRequestURI());
 		

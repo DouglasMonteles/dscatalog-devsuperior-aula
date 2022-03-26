@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 @Entity
@@ -102,8 +103,9 @@ public class Product implements Serializable {
 		return date;
 	}
 
-	public void setDate(Instant date) {
-		this.date = date;
+	@PrePersist
+	public void prePersist() {
+		this.date = Instant.now();
 	}
 
 	public Set<Category> getCategories() {
