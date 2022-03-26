@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuperior.dscatalog.dtos.ProductDTO;
 import com.devsuperior.dscatalog.entities.Product;
+import com.devsuperior.dscatalog.repository.CategoryRepository;
 import com.devsuperior.dscatalog.repository.ProductRepository;
 import com.devsuperior.dscatalog.services.exceptions.DatabaseException;
 import com.devsuperior.dscatalog.services.exceptions.ResourceNotFoundException;
@@ -24,6 +25,9 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 	
 	@Transactional(readOnly = true)
 	public List<ProductDTO> findAll() {
@@ -58,11 +62,7 @@ public class ProductService {
 	public ProductDTO insert(ProductDTO productDTO) {
 		var product = new Product();
 		
-		product.setId(null);
-		product.setName(productDTO.getName());
-		product.setDescription(productDTO.getDescription());
-		product.setPrice(productDTO.getPrice());
-		product.setImgUrl(productDTO.getImgUrl());
+		this.copyDtoToEntity(productDTO, product);
 		
 		product = this.productRepository.save(product);
 		
@@ -74,10 +74,7 @@ public class ProductService {
 		try {
 			var product = this.productRepository.getById(productDTO.getId());
 			
-			product.setName(productDTO.getName());
-			product.setDescription(productDTO.getDescription());
-			product.setPrice(productDTO.getPrice());
-			product.setImgUrl(productDTO.getImgUrl());
+			this.copyDtoToEntity(productDTO, product);
 			
 			product = this.productRepository.save(product);
 			
@@ -95,6 +92,20 @@ public class ProductService {
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
+	}
+	
+	private void copyDtoToEntity(ProductDTO productDTO, Product product) {
+		product.setName(productDTO.getName());
+		product.setDescription(productDTO.getDescription());
+		product.setPrice(productDTO.getPrice());
+		product.setImgUrl(productDTO.getImgUrl());
+		
+		product.getCategories().clear();
+		
+		productDTO.getCategories().forEach(categoryDTO -> {
+			var category = this.categoryRepository.getById(categoryDTO.getId());
+			product.getCategories().add(category);
+		});
 	}
 	
 }
