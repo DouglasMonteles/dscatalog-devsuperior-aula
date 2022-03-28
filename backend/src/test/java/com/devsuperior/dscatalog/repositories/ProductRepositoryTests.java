@@ -31,6 +31,22 @@ public class ProductRepositoryTests {
 	}
 	
 	@Test
+	public void findByIdShouldReturnOptionalProductNotEmptyWhenIdExists() {
+		var optionalProduct = this.productRepository.findById(exintingId);
+		var product = optionalProduct.get();
+		
+		Assertions.assertTrue(optionalProduct.isPresent());
+		Assertions.assertEquals(exintingId, product.getId());
+	}
+	
+	@Test
+	public void findByIdShouldReturnOptionalProductEmptyWhenIdDoesNotExists() {
+		var optionalProduct = this.productRepository.findById(nonExistingId);
+		
+		Assertions.assertFalse(optionalProduct.isPresent());
+	}
+	
+	@Test
 	public void saveShouldPersistWithAutoincrementWhenIdIsNull() {
 		var product = ProductFactory.createProduct();
 		product.setId(null);
