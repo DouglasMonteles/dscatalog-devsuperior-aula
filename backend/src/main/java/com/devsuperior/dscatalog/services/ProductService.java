@@ -52,7 +52,7 @@ public class ProductService {
 	public ProductDTO findById(Long id) {
 		var optionalProduct = this.productRepository.findById(id);
 		var product = optionalProduct.orElseThrow(() ->
-					new EntityNotFoundException("Entity not found")
+					new ResourceNotFoundException("Entity not found")
 				);
 		
 		return new ProductDTO(product, product.getCategories());
@@ -88,7 +88,7 @@ public class ProductService {
 		try {
 			this.productRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntityNotFoundException("Id not found: " + id);
+			throw new ResourceNotFoundException("Id not found: " + id);
 		} catch (DataIntegrityViolationException e) {
 			throw new DatabaseException("Integrity violation");
 		}
