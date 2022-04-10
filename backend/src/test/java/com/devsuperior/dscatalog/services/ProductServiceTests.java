@@ -126,9 +126,7 @@ public class ProductServiceTests {
 	@Test
 	public void updateShouldReturnProductDTOWhenIdExists() {
 		var productDTO = ProductFactory.createProductDTO();
-		productDTO.setId(existingId);
-		
-		var result = this.productService.update(productDTO);
+		var result = this.productService.update(this.existingId, productDTO);
 		
 		Assertions.assertNotNull(result);
 		
@@ -140,9 +138,7 @@ public class ProductServiceTests {
 	public void updateShouldThrowResourceNotFoundExceptionWhenIdDoesNotExists() {
 		Assertions.assertThrows(ResourceNotFoundException.class, () -> {
 			var productDTO = new ProductDTO(this.product);
-			productDTO.setId(nonExistingId);
-			
-			this.productService.update(productDTO);
+			this.productService.update(this.nonExistingId, productDTO);
 		});
 		
 		this.product.setId(nonExistingId);

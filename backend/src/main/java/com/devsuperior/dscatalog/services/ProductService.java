@@ -70,9 +70,9 @@ public class ProductService {
 	}
 	
 	@Transactional
-	public ProductDTO update(ProductDTO productDTO) {
+	public ProductDTO update(Long id, ProductDTO productDTO) {
 		try {
-			var product = this.productRepository.getById(productDTO.getId());
+			var product = this.productRepository.getById(id);
 			
 			this.copyDtoToEntity(productDTO, product);
 			

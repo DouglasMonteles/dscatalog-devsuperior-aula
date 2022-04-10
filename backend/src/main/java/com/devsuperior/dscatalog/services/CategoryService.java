@@ -67,9 +67,9 @@ public class CategoryService {
 	}
 
 	@Transactional
-	public CategoryDTO update(CategoryDTO categoryDTO) {
+	public CategoryDTO update(Long id, CategoryDTO categoryDTO) {
 		try {
-			var category = categoryRepository.getById(categoryDTO.getId());
+			var category = categoryRepository.getById(id);
 			
 			category.setName(categoryDTO.getName());
 			
