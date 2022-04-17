@@ -53,10 +53,10 @@ public class ProductResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<Void> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
-		this.productService.update(id, productDTO);
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+		var updatedProductDTO = this.productService.update(id, productDTO);
 		
-		return ResponseEntity.ok().build();
+		return ResponseEntity.ok().body(updatedProductDTO);
 	}
 	
 	@DeleteMapping("/{id}")
