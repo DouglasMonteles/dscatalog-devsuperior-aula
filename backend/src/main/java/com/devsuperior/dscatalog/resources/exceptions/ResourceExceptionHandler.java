@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -58,6 +59,25 @@ public class ResourceExceptionHandler {
 		error.setError("Entity not found");
 		error.setMessage(e.getMessage());
 		error.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(status).body(error);
+	}
+	
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity<ValidationError> methodArgumentNotValidException(
+			MethodArgumentNotValidException e, HttpServletRequest request) {
+		var error = new ValidationError();
+		var status = HttpStatus.UNPROCESSABLE_ENTITY;
+		
+		error.setTimestamp(Instant.now());
+		error.setStatus(status.value());
+		error.setError("Validation exception");
+		error.setMessage(e.getMessage());
+		error.setPath(request.getRequestURI());
+		
+		e.getBindingResult().getFieldErrors().forEach(fieldError -> {
+			 error.addError(fieldError.getField(), fieldError.getDefaultMessage());
+		});
 		
 		return ResponseEntity.status(status).body(error);
 	}
