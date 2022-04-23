@@ -11,7 +11,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 
 import com.devsuperior.dscatalog.entities.Product;
 import com.devsuperior.dscatalog.factory.ProductFactory;
-import com.devsuperior.dscatalog.repository.ProductRepository;
+import com.devsuperior.dscatalog.repositories.ProductRepository;
 
 @DataJpaTest
 public class ProductRepositoryTests {
