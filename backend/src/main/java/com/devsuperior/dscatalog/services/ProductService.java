@@ -45,7 +45,10 @@ public class ProductService {
 			String name, Pageable pageable) {
 		var categories = (categoryId == 0) ? null : List.of(this.categoryRepository.getById(categoryId));
 		var productsPage = this.productRepository.findProduct(categories, name, pageable);
-		var productsPageDTO = productsPage.map(product -> new ProductDTO(product));
+		
+		productRepository.findProductsWithCategories(productsPage.getContent());
+		
+		var productsPageDTO = productsPage.map(product -> new ProductDTO(product, product.getCategories()));
 		
 		return productsPageDTO;
 	}
