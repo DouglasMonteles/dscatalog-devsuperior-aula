@@ -46,6 +46,8 @@ public class ProductServiceTests {
 	private Long existingId;
 	private Long nonExistingId;
 	private Long dependentId;
+	private Long categoryId;
+	private String name;
 	private Product product;
 	private PageImpl<Product> page;
 	private Category category;
@@ -55,6 +57,8 @@ public class ProductServiceTests {
 		this.existingId = 1L;
 		this.nonExistingId = 1000L;
 		this.dependentId = 4L;
+		this.categoryId = 1L;
+		this.name = "pc gamer";
 		this.product = ProductFactory.createProduct();
 		this.category = CategoryFactory.createCategory();
 		this.page = new PageImpl<Product>(List.of(product));
@@ -98,7 +102,7 @@ public class ProductServiceTests {
 	public void findAllPagedShoudReturnPage() {
 		Pageable pageable = PageRequest.of(0, 10);
 		
-		Page<ProductDTO> result = this.productService.findAllPageable(pageable);
+		Page<ProductDTO> result = this.productService.findAllPageable(categoryId, name, pageable);
 		
 		Assertions.assertNotNull(result);
 		

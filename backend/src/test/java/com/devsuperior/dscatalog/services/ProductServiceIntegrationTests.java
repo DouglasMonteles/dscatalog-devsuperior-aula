@@ -26,18 +26,22 @@ public class ProductServiceIntegrationTests {
 	private Long existingId;
 	private Long nonExistingId;
 	private Long countTotalProducts;
+	private Long categoryId;
+	private String name;
 	
 	@BeforeEach
 	public void setUp() throws Exception {
 		this.existingId = 1L;
 		this.nonExistingId = 1000L;
 		this.countTotalProducts = 25L;
+		this.categoryId = 1L;
+		this.name = "pc gamer";
 	}
 	
 	@Test
 	public void findAllPagedShouldReturnPageWhenPage0Size10() {
 		var pageRequest = PageRequest.of(0, 10);
-		var result = this.productService.findAllPageable(pageRequest);
+		var result = this.productService.findAllPageable(categoryId, name, pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals(0, result.getNumber());
@@ -48,7 +52,7 @@ public class ProductServiceIntegrationTests {
 	@Test
 	public void findAllPageShouldReturnEmptyPageWhenPageDoesNotExist() {
 		var pageRequest = PageRequest.of(50, 10);
-		var result = this.productService.findAllPageable(pageRequest);
+		var result = this.productService.findAllPageable(categoryId, name, pageRequest);
 		
 		Assertions.assertTrue(result.isEmpty());
 	}
@@ -56,7 +60,7 @@ public class ProductServiceIntegrationTests {
 	@Test
 	public void findAllPageShouldReturnShortedPageWhenSortByName() {
 		var pageRequest = PageRequest.of(0, 10, Sort.by("name"));
-		var result = this.productService.findAllPageable(pageRequest);
+		var result = this.productService.findAllPageable(categoryId, name, pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals("Macbook Pro", result.getContent().get(0).getName());

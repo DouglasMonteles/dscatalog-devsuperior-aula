@@ -20,7 +20,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	private Environment env;
 	
 	private static final String[] PUBLIC = {
-			"/oauth2/token",
+			"/oauth/token",
 			"/h2-console/**",
 	};
 	

@@ -41,8 +41,10 @@ public class ProductService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Page<ProductDTO> findAllPageable(Pageable pageable) {
-		var productsPage = this.productRepository.findAll(pageable);
+	public Page<ProductDTO> findAllPageable(Long categoryId, 
+			String name, Pageable pageable) {
+		var categories = (categoryId == 0) ? null : List.of(this.categoryRepository.getById(categoryId));
+		var productsPage = this.productRepository.findProduct(categories, name, pageable);
 		var productsPageDTO = productsPage.map(product -> new ProductDTO(product));
 		
 		return productsPageDTO;

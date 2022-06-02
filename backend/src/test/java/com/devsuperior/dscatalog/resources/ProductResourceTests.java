@@ -43,6 +43,8 @@ public class ProductResourceTests {
 	private Long existingId;
 	private Long nonExistingId;
 	private Long dependentId;
+	private Long categoryId;
+	private String name;
 	private PageImpl<ProductDTO> page;
 	private ProductDTO productDTO;
 	
@@ -51,10 +53,12 @@ public class ProductResourceTests {
 		this.existingId = 1L;
 		this.nonExistingId = 2L;
 		this.dependentId = 3L;
+		this.categoryId = 1L;
+		this.name = "pc gamer";
 		this.productDTO = ProductFactory.createProductDTO();
 		this.page = new PageImpl<>(List.of(productDTO));
 		
-		Mockito.when(this.productService.findAllPageable(ArgumentMatchers.any()))
+		Mockito.when(this.productService.findAllPageable(categoryId, name, ArgumentMatchers.any()))
 			.thenReturn(page);
 		
 		Mockito.when(this.productService.findById(existingId))
