@@ -34,8 +34,8 @@ public class ProductServiceIntegrationTests {
 		this.existingId = 1L;
 		this.nonExistingId = 1000L;
 		this.countTotalProducts = 25L;
-		this.categoryId = 1L;
-		this.name = "pc gamer";
+		this.categoryId = 0L;
+		this.name = "";
 	}
 	
 	@Test

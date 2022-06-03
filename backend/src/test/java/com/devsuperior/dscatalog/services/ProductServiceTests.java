@@ -57,8 +57,8 @@ public class ProductServiceTests {
 		this.existingId = 1L;
 		this.nonExistingId = 1000L;
 		this.dependentId = 4L;
-		this.categoryId = 1L;
-		this.name = "pc gamer";
+		this.categoryId = 0L;
+		this.name = "";
 		this.product = ProductFactory.createProduct();
 		this.category = CategoryFactory.createCategory();
 		this.page = new PageImpl<Product>(List.of(product));
@@ -80,6 +80,9 @@ public class ProductServiceTests {
 		
 		Mockito.when(this.productRepository.findById(nonExistingId))
 			.thenReturn(Optional.empty());
+		
+		Mockito.when(this.productRepository.findProduct(ArgumentMatchers.any(), ArgumentMatchers.any(), ArgumentMatchers.any()))
+		.thenReturn(page);
 		
 		Mockito.when(this.categoryRepository.getById(existingId))
 			.thenReturn(category);
@@ -105,9 +108,6 @@ public class ProductServiceTests {
 		Page<ProductDTO> result = this.productService.findAllPageable(categoryId, name, pageable);
 		
 		Assertions.assertNotNull(result);
-		
-		Mockito.verify(this.productRepository)
-			.findAll(pageable);
 	}
 	
 	@Test
